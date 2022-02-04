@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from .models import *
 from .forms import RoomForm, TopicForm
@@ -130,6 +131,7 @@ def deleteConfirm(request, pk):
 
 
 def loginPage(request):
+    page = 'login'
     if request.user.is_authenticated:
         return redirect('room')
 
@@ -153,17 +155,33 @@ def loginPage(request):
 
         context = {
             "username": username,
-            "password": password
+            "password": password,
+            "page": page,
         }
 
     else:
         context = {
-            "first": first
+            "first": first,
+            "page": page
         }
-
+    print('page: ', page)
     return render(request, 'base/login_register.html', context)
 
 
 def logoutUser(request):
     logout(request)
     return redirect('room')
+
+
+def registerUser(request):
+    form = UserCreationForm(request.POST or None)
+    if form.is_valid():
+        user = form.save(commit=False)
+        user.username = user.username.lower()
+        form.save()
+        login(request, user)
+        return redirect('room')
+    else:
+        message.error(request, 'An error occurred during registration.')
+    form = UserCreationForm()
+    return render(request, 'base/login_register.html', {'form': form})

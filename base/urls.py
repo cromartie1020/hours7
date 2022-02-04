@@ -9,6 +9,8 @@ urlpatterns = [
     path('confirm/<int:pk>/', views.deleteConfirm, name='confirm'),
     path('login/', views.loginPage, name='login'),
     path('logout/', views.logoutUser, name='logout'),
+    path('register/', views.registerUser, name='register'),
+
 
 
 
