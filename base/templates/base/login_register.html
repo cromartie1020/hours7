@@ -1,0 +1,18 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}
+
+  Login-Register  
+{% endblock %}
+
+{% block content %}
+ <form action="" method='POST'>
+     {% csrf_token %}
+     {{ form.as_p }}
+     <input type="text" name='username' placeholder='Enter User Name.' />
+     <input type="password" name='password' placeholder="Enter your password." />
+     <button type="submit" value=Submit>Submit </button>
+ </form>
+ {{ username }}
+ {{ password }}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}
+
+  Forms  
+{% endblock %}
+
+{% block content %}
+ <form action="" method='POST'>
+     {% csrf_token %}
+     {{ form.as_p }}
+     <button type='submit'>Are you sure you want to delete this room?</button>
+     <br>
+     <a href="{% url 'delete' room.id %}"><button type='submit'>Yes</button></a>
+     <a href="{% url 'room' %}"><button type='submit'>No</button></a>
+     
+     
+ </form>
+{% endblock %}

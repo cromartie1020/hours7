@@ -1,0 +1,22 @@
+{% extends 'base/main.html' %}
+{% block title %}
+
+  Room Detail  
+{% endblock %}
+
+{% block content %}
+<h1> Room Detail List </h1>
+
+ <br>  
+ <h3>id = {{ room.id }}</h3>
+ <br>
+ <h3>name = {{ room.name }}</h3>
+ <br>
+ <h3>Description is: {{ room.description}}</h3>
+ <br>
+ <h3>Date Last Updated: {{ room.update }}</h3> 
+ <br>
+ <h3>Date Created: {{ room.created }}</h3>
+
+ 
+{% endblock %}

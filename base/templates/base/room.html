@@ -1,0 +1,59 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block title %}
+
+Room  
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <div class="center"> 
+        <form class="d-flex" method='GET'>
+            <input class="form-control" type="search" placeholder="Search Topics" name="search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <h3 class='mr-3'>Browse Topics</h3>    
+        <hr class="mr-5">                        <!-- Do a grid -->
+        <div class='text-left'>
+            <a  href="{% url 'room' %}">All</a>
+        </div>
+        <hr class='mr-5'>
+        {% for topic in topics %}
+           <div class="text-left"> 
+               
+               <a href="{% url 'room' %}?search={{ topic.name }}">{{ topic.name }}</a>
+           </div>
+            <hr class="mr-5">
+        {% endfor %}
+    </div>
+    <div>
+        <h1 class="ml-2"> Rooms </h1>
+        <br>
+        <div>
+            {{ rooms_count }} rooms available.
+        </div>
+        <div class='mb-1 under'>
+
+        <a  href="{% url 'create' %}">Create a Room.</a>
+        </div>
+        <br>
+        {% for room in rooms %}
+            The Host of the room is: {{ room.host.username }}
+            <br>
+            The room name is: <a href="{% url 'detail' room.id %}"> {{ room.name }}</a> </h5>
+            <br>
+            
+            The room topic is: {{ room.topic.name }}
+            <br>
+            {{ room.description }}
+            <br>
+            {% if  request.user == room.host %}
+            <a href="{% url 'update' room.id %}">Update this Room</a>
+            <a href="{% url 'confirm' room.id %}"> Delete this Room</a>
+            {% endif %}
+            <hr>
+        {% endfor %}
+    </div>
+</div>
+  
+{% endblock %}
