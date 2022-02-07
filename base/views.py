@@ -43,6 +43,7 @@ def room(request):
         search = ''
 
     rooms = Room.objects.filter(topic__name__icontains=search)
+
     rooms_count = rooms.count()
     if not rooms:
         rooms = Room.objects.all()
@@ -52,7 +53,8 @@ def room(request):
     context = {
         'rooms': rooms,
         'topics': topics,
-        'rooms_count': rooms_count
+        'rooms_count': rooms_count,
+
     }
 
     return render(request, 'base/room.html', context)
@@ -68,11 +70,38 @@ def room_detail(request, pk):
         "room": room
     }
     return render(request, 'base/detail.html', context)
+    Message model
+    host = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    # topic =
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    body = models.TextField()
+    # participants =
+    update = models.DateTimeField(auto_now=datetime.now)
+    created = models.DateTimeField(auto_now_add=True)
 
     '''
+
+    #mess = Message.objects.get(host=request.user)
     room = Room.objects.get(id=pk)
+
+    room_messages = room.message_set.all().order_by('-created')
+
+    if request.method == "POST":
+        message1 = Message.objects.create(
+            host=request.user,
+            room=room,
+            body=request.POST.get('body')
+        )
+
+        return redirect('detail', pk=room.id)
+
+    for value in request.POST:
+        print(value)
+        print(request.user)
     context = {
-        'room': room
+        'room': room,
+        'room_messages': room_messages,
+
 
     }
 
@@ -139,6 +168,7 @@ def loginPage(request):
     if request.method == "POST":
 
         username = request.POST["username"]
+        user.username = user.username.lower()
         password = request.POST["password"]
 
         try:
@@ -178,10 +208,15 @@ def registerUser(request):
     if form.is_valid():
         user = form.save(commit=False)
         user.username = user.username.lower()
+        user.save()
         form.save()
         login(request, user)
         return redirect('room')
     else:
-        message.error(request, 'An error occurred during registration.')
+        messages.error(request, 'An error occurred during registration.')
     form = UserCreationForm()
     return render(request, 'base/login_register.html', {'form': form})
+
+
+def createMessage(request, pk):
+    pass

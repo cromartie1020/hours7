@@ -7,7 +7,9 @@ Room
 
 {% block content %}
 <div class="home-container">
+    
     <div class="center"> 
+        <p class="text-left">Hello {{request.user.username}}! </p>
         <form class="d-flex" method='GET'>
             <input class="form-control" type="search" placeholder="Search Topics" name="search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -45,7 +47,11 @@ Room
             
             The room topic is: {{ room.topic.name }}
             <br>
-            {{ room.description }}
+            <div>
+              {{ room.description }}
+            </div>
+            
+
             <br>
             {% if  request.user == room.host %}
                 <a href="{% url 'update' room.id %}">Update this Room</a>
