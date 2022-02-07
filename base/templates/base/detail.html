@@ -5,49 +5,63 @@
 {% endblock %}
 
 {% block content %}
-<h1> Room Detail List </h1>
+<div class='ml-5 room-container' >
+  <div>
+      
+        <h1> Room Detail List </h1>
 
- <br>  
- <h3>id = {{ room.id }}</h3>
- <br>
- <h3>name = {{ room.name }}</h3>
- <br>
- <h3>Description is: {{ room.description}}</h3>
- <br>
- <!-- Create a message -->
+        <br>  
+        <h3>id = {{ room.id }}</h3>
+        <br>
+        <h3>name = {{ room.name }}</h3>
+        <br>
+        <h3>Description is: {{ room.description}}</h3>
+        <br>
+        <!-- Create a message -->
 
- <div class="comment-wrapper">
-  <h3>
-      Conversation
-  </h3>
-  <hr>
-  
-  {% for message in room_messages %}
-    <div> 
-      The user is {{ request.user.username }}
-      <br> and the new message is:
-      <p>{{ message.body }}</p>
-      {{ message.created|timesince }} ago.
-    </div>
-  {% endfor %}
- {% if request.user.is_authenticated %}
-  <div class="comment-form">
-    <form action="" method="POST">
-      {% csrf_token %}
-      <input type="text" placeholder="Write your message here..." name="body" />
-      <!--<button type="submit" value="Submit">Submit</button> -->
+        <div class="comment-wrapper">
+          <h3>
+              Conversation
+          </h3>
+          <hr>
+          
+          {% for message in room_messages %}
+              <div> 
+                The user is {{ request.user }}
+                <br> and the new message is:{{ message.body }} 
+                
+                {{ message.created|timesince }} ago.
+                <br>
+              </div>
+          {% endfor %}
+          {% if request.user.is_authenticated %}
+              <div class="comment-form">
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  <input type="text" placeholder="Write your message here..." name="body" />
+                </form>
 
-    </form>
+              </div>
+          {% else %}
+              <div>
+                  <a href="{% url 'login' %}">Please login to contribute to the conversation.</a>    
+              </div>
+          {% endif %}
 
+        </div>
+        
+        
+        <h3>Room Last Updated: {{ room.update }}</h3> 
+        <br>
+        <h3>Room creation date: {{ room.created }}</h3>
+        
+      
   </div>
-  {% endif %}
 
-   
 
- </div>
- <h3>Date Last Updated: {{ room.update }}</h3> 
- <br>
- <h3>Date Created: {{ room.created }}</h3>
+  <div>
+    <h3>Participants</h3>
+  </div>  
 
- 
+</div> 
 {% endblock %}

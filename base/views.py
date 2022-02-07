@@ -168,7 +168,7 @@ def loginPage(request):
     if request.method == "POST":
 
         username = request.POST["username"]
-        user.username = user.username.lower()
+        username = username.lower()
         password = request.POST["password"]
 
         try:
