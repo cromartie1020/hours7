@@ -85,6 +85,7 @@ def room_detail(request, pk):
     room = Room.objects.get(id=pk)
 
     room_messages = room.message_set.all().order_by('-created')
+    participants = room.participants.all()
 
     if request.method == "POST":
         message1 = Message.objects.create(
@@ -92,6 +93,7 @@ def room_detail(request, pk):
             room=room,
             body=request.POST.get('body')
         )
+        room.participants.add(request.user)
 
         return redirect('detail', pk=room.id)
 
@@ -101,6 +103,7 @@ def room_detail(request, pk):
     context = {
         'room': room,
         'room_messages': room_messages,
+        'participants': participants
 
 
     }
@@ -168,7 +171,8 @@ def loginPage(request):
     if request.method == "POST":
 
         username = request.POST["username"]
-        username = username.lower()
+
+        print('username', username)
         password = request.POST["password"]
 
         try:
@@ -207,7 +211,7 @@ def registerUser(request):
     form = UserCreationForm(request.POST or None)
     if form.is_valid():
         user = form.save(commit=False)
-        user.username = user.username.lower()
+        user.username = user.username
         user.save()
         form.save()
         login(request, user)

@@ -9,10 +9,26 @@ Room
 <div class="home-container">
     
     <div class="center"> 
-        <p class="text-left ml-2">Hello {{request.user.username}}! </p>
+        <p class="text-left ml-2">
+            {% if request.user.is_authenticated %}
+               Hello {{request.user.username}}! 
+            {% else %}
+              
+               <a href="{% url 'login' %}">
+                   <small>Please Login</small>
+
+               </a>
+               <a href="{% url 'register' %}">
+                   <small>or register for a new account. </small>
+               </a>
+                
+               
+            {% endif %}   
+
+        </p>
         <form class="d-flex" method='GET'>
-            <input class="form-control ml-2" type="search" placeholder="Search Topics" name="search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control ml-2 mr-1" type="search" placeholder="Search Topics" name="search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0 mr-4" type="submit">Search</button>
         </form>
         <h3 class='mr-4'>Browse Topics</h3>    
         <hr class="mr-5">                        <!-- Do a grid -->

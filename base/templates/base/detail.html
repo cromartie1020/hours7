@@ -27,13 +27,15 @@
           
           {% for message in room_messages %}
               <div> 
-                The user is {{ request.user }}
-                <br> and the new message is:{{ message.body }} 
+                {{ message.host }}
                 
+                <br> and the new message is:{{ message.body }} 
+               
                 {{ message.created|timesince }} ago.
                 <br>
               </div>
           {% endfor %}
+          
           {% if request.user.is_authenticated %}
               <div class="comment-form">
                 <form action="" method="POST">
@@ -61,6 +63,11 @@
 
   <div>
     <h3>Participants</h3>
+    {% for message in room_messages   %}
+            <div>
+              <p>{{ message.host }} </p>
+            </div>
+    {% endfor %}
   </div>  
 
 </div> 
